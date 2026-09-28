@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- ============================================================
+       HAIRSTUDIO BREEZE — Personal hair studio, Rotterdam
+       One client at a time, by Briseida
+       Single-file build: HTML5 + CSS3 + Vanilla JS + Bootstrap 5
+       ============================================================ -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hairstudio Breeze | Hair Studio in Rotterdam</title>
+  <meta name="description" content="Hairstudio Breeze in Rotterdam — colour, cuts and treatments with full attention, one client at a time. Warm, calm and personal. Rated ★5.0 on Google (52 reviews). Message Briseida on WhatsApp to book.">
+  <meta name="theme-color" content="#4F6B57">
+  <!-- Favicon (leaf emoji as inline SVG data URI) -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍃</text></svg>">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Nunito+Sans:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+  /* ============================================================
+     1. DESIGN TOKENS — brand palette as CSS variables
+     ============================================================ */
+  :root{
+    --cream:      #FAF6F0;   /* main background */
+    --sand:       #EADFCF;   /* alt sections, cards */
+    --sand-soft:  #F3EBDD;   /* lighter sand for borders/subtle fills */
+    --sage:       #8FA58B;   /* primary accent */
+    --sage-deep:  #4F6B57;   /* headings, buttons, footer */
+    --sage-dark:  #3E5746;   /* deep sage hover */
+    --terra:      #C98B6B;   /* small accents, hover, highlights */
+    --terra-soft: #DCA98D;   /* terracotta, lighter */
+    --charcoal:   #2F2F2F;   /* body text */
+    --text-soft:  #6E6A62;   /* secondary text */
+    --radius-sm: 12px;
+    --radius-md: 16px;
+    --radius-lg: 20px;
+    --shadow-sm: 0 3px 14px rgba(79,107,87,.10);
+    --shadow-md: 0 16px 38px rgba(79,107,87,.18);
+    --font-head: 'Playfair Display', Georgia, serif;
+    --font-body: 'Nunito Sans', 'Segoe UI', Arial, sans-serif;
+  }
+
+  /* ============================================================
+     2. BASE — mobile first, no horizontal scroll
+     ============================================================ */
+  html{ scroll-behavior:smooth; }
+  body{
+    font-family:var(--font-body);
+    font-weight:400;
+    color:var(--charcoal);
+    background:var(--cream);
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{ font-family:var(--font-head); color:var(--sage-deep); font-weight:500; }
+  img{ max-width:100%; }
+  a{ text-decoration:none; }
+  ::selection{ background:var(--terra); color:#fff; }
+  section{ scroll-margin-top:84px; }
+
+  /* ============================================================
+     3. TYPOGRAPHIC HELPERS
+     ============================================================ */
+  .label{
+    display:inline-block;
+    font-size:.72rem; font-weight:700; letter-spacing:.30em;
+    text-transform:uppercase; color:var(--sage);
+  }
+  .label.on-dark{ color:var(--sand); }
+  .h-display{
+    font-size:clamp(2.3rem, 7vw, 4rem);
+    line-height:1.12; font-weight:500;
+  }
+  .h-section{ font-size:clamp(1.8rem, 4.5vw, 2.6rem); line-height:1.15; }
+  .lead-copy{ font-size:1rem; line-height:1.95; color:var(--text-soft); }
+  .sand-rule{ width:52px; height:1px; background:var(--sand); border:0; opacity:1; mix-blend-mode:multiply; }
+  .on-dark .sand-rule{ background:rgba(250,246,240,.35); mix-blend-mode:normal; }
+
+  /* ============================================================
+     4. BUTTONS — pill-shaped, smooth transitions
+     ============================================================ */
+  .btn-breeze{
+    display:inline-flex; align-items:center; gap:.6rem;
+    font-weight:700; font-size:.85rem; letter-spacing:.08em;
+    background:var(--sage-deep); color:var(--cream);
+    padding:.95rem 2.1rem; border-radius:300px; border:1px solid var(--sage-deep);
+    transition:all .35s ease;
+  }
+  .btn-breeze svg{ width:18px; height:18px; stroke:currentColor; fill:none; stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round; }
+  .btn-breeze:hover{
+    background:var(--sage-dark); border-color:var(--sage-dark); color:var(--cream);
+    transform:translateY(-2px); box-shadow:0 10px 22px rgba(79,107,87,.25);
+  }
+  .btn-breeze:focus-visible{ outline:2px solid var(--terra); outline-offset:3px; }
+  .btn-ghost{
+    display:inline-flex; align-items:center; gap:.6rem;
+    font-weight:700; font-size:.85rem; letter-spacing:.08em;
+    background:transparent; color:var(--sage-deep);
+    padding:.95rem 2.1rem; border-radius:300px; border:1.5px solid var(--sage-deep);
+    transition:all .35s ease;
+  }
+  .btn-ghost:hover{
+    background:var(--sage-deep); color:var(--cream); transform:translateY(-2px);
+    box-shadow:0 10px 22px rgba(79,107,87,.22);
+  }
+  .btn-ghost.light{ color:var(--cream); border-color:rgba(250,246,240,.8); }
+  .btn-ghost.light:hover{ background:var(--cream); color:var(--sage-deep); }
+  .link-sage{
+    font-weight:700; font-size:.85rem; letter-spacing:.06em; color:var(--sage-deep);
+    display:inline-flex; align-items:center; gap:.4rem;
+    transition:color .3s ease, gap .3s ease;
+  }
+  .link-sage:hover{ color:var(--terra); gap:.7rem; }
+  .link-sage svg{ width:15px; height:15px; stroke:currentColor; fill:none; stroke-width:2; }
+
+  /* ============================================================
+     5. NAVBAR — transparent over hero → cream + shadow on scroll
+     ============================================================ */
+  .navbar-breeze{
+    position:fixed; top:0; left:0; right:0; z-index:1030;
+    padding:1.05rem 0;
+    transition:background .4s ease, padding .4s ease, box-shadow .4s ease;
+  }
+  .navbar-breeze .brand{
+    display:inline-flex; align-items:center; gap:.55rem;
+    font-family:var(--font-head); font-size:1.28rem; font-weight:600;
+    color:var(--sage-deep); letter-spacing:.02em;
+  }
+  .navbar-breeze .brand svg{
+    width:26px; height:26px; stroke:var(--sage); fill:none;
+    stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round; flex:0 0 auto;
+  }
+  .navbar-breeze .nav-link{
+    font-weight:700; font-size:.8rem; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--charcoal); margin:0 .3rem; padding:.6rem .7rem !important;
+    transition:color .3s ease;
+  }
+  .navbar-breeze .nav-link:hover{ color:var(--terra); }
+  .navbar-breeze .nav-book{
+    font-weight:700; font-size:.78rem; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--cream); background:var(--sage-deep); border-radius:300px;
+    padding:.6rem 1.5rem; margin-left:.8rem; white-space:nowrap;
+    transition:all .3s ease;
+  }
+  .navbar-breeze .nav-book:hover{ background:var(--terra); color:#fff; }
+  .navbar-breeze .navbar-toggler{
+    border:1px solid rgba(79,107,87,.35); border-radius:12px; padding:.45rem .6rem;
+  }
+  .navbar-breeze .navbar-toggler:focus{ box-shadow:0 0 0 3px rgba(143,165,139,.3); }
+  .toggler-bar{ display:block; width:20px; height:2px; background:var(--sage-deep); border-radius:2px; }
+  .toggler-bar + .toggler-bar{ margin-top:5px; }
+  /* scrolled state: cream + light shadow */
+  .navbar-breeze.scrolled{
+    background:rgba(250,246,240,.97); backdrop-filter:blur(8px);
+    padding:.65rem 0; box-shadow:var(--shadow-sm);
+  }
+  /* mobile dropdown: clean rounded panel */
+  @media (max-width:991.98px){
+    .navbar-breeze{ background:rgba(250,246,240,.97); box-shadow:var(--shadow-sm); }
+    .navbar-breeze .navbar-collapse{
+      background:var(--cream); margin-top:.9rem; border-radius:var(--radius-md);
+      border:1px solid var(--sand); box-shadow:var(--shadow-md);
+      padding:1.2rem 1.1rem 1.5rem; text-align:center;
+    }
+    .navbar-breeze .nav-book{ margin:.7rem auto 0; display:inline-block; }
+  }
+
+  /* ============================================================
+     6. HERO — full screen, soft cream-to-transparent overlay
+     ============================================================ */
+  .hero{
+    position:relative; min-height:100svh;
+    display:flex; align-items:flex-end;
+  }
+  .hero-bg{
+    position:absolute; inset:0; z-index:0;
+  }
+  .hero-bg img{
+    width:100%; height:100%; object-fit:cover; object-position:center 30%;
+  }
+  .hero::after{ /* warm cream veil that keeps the light text zone readable */
+    content:""; position:absolute; inset:0; z-index:1;
+    background:linear-gradient(to top,
+    
+      rgba(250,246,240,.35) 58%,
+      rgba(250,246,240,.08) 78%,
+      rgba(250,246,240,.0) 100%);
+  }
+  .hero-content{ position:relative; z-index:2; width:100%; padding-bottom:4.5rem; }
+  .hero .h-display{ margin-bottom:1.1rem; }
+  .hero .subtext{
+    font-size:1.02rem; color:var(--text-soft); line-height:1.85;
+    max-width:480px; margin-bottom:2rem;
+  }
+  .hero .trust{
+    display:inline-flex; align-items:center; gap:.55rem;
+    background:rgba(255,255,255,.75); backdrop-filter:blur(6px);
+    border:1px solid var(--sand);
+    border-radius:300px; padding:.55rem 1.2rem;
+    font-size:.85rem; font-weight:600; color:var(--sage-deep);
+  }
+  .hero .trust .stars{ color:var(--terra); letter-spacing:.08em; }
+  @media (min-width:992px){
+    .hero{ align-items:center; }
+    .hero::after{
+      background:linear-gradient(to right,
+        rgba(250,246,240,.96) 0%,
+        rgba(250,246,240,.82) 34%,
+        rgba(250,246,240,.35) 62%,
+        rgba(250,246,240,0) 100%);
+    }
+  }
+
+  /* ============================================================
+     7. SECTION RHYTHM & BACKGROUNDS
+     ============================================================ */
+  .section{ padding:clamp(3.8rem, 8vw, 6.5rem) 0; }
+  .bg-sand{ background:var(--sand-soft); }
+  .bg-sage{ background:var(--sage-deep); color:var(--cream); }
+  .bg-sage h1, .bg-sage h2, .bg-sage h3{ color:var(--cream); }
+
+  /* ============================================================
+     8. WHY BREEZE — thin sage line icons
+     ============================================================ */
+  .why-item{ text-align:center; padding:1.8rem 1rem; }
+  .why-item .icon-ring{
+    width:74px; height:74px; margin:0 auto 1.2rem; border-radius:50%;
+    background:#fff; border:1px solid var(--sand);
+    display:flex; align-items:center; justify-content:center;
+    transition:transform .35s ease, border-color .35s ease;
+  }
+  .why-item:hover .icon-ring{ transform:translateY(-4px); border-color:var(--sage); }
+  .why-item svg{
+    width:28px; height:28px; stroke:var(--sage); fill:none;
+    stroke-width:1.4; stroke-linecap:round; stroke-linejoin:round;
+  }
+  .why-item h3{ font-size:1.25rem; margin-bottom:.5rem; }
+  .why-item p{ font-size:.92rem; color:var(--text-soft); line-height:1.8; margin:0; }
+
+  /* ============================================================
+     9. MEET BRISEIDA — arched portrait, terracotta offset outline
+     ============================================================ */
+  .portrait-wrap{ position:relative; max-width:400px; margin:0 auto; }
+  .portrait-wrap::before{
+    content:""; position:absolute; inset:0; z-index:1;
+    transform:translate(16px,16px);
+    border:2px solid var(--terra);
+    border-radius:200px 200px var(--radius-lg) var(--radius-lg);  /* soft arch */
+    pointer-events:none;
+  }
+  .portrait-frame{
+    position:relative; z-index:2; overflow:hidden;
+    border-radius:200px 200px var(--radius-lg) var(--radius-lg);
+    aspect-ratio:4/5; background:var(--sand);
+    box-shadow:var(--shadow-sm);
+  }
+  .portrait-frame img{ width:100%; height:100%; object-fit:cover; }
+  /* clearly marked placeholder — swap in Briseida's real photo */
+  .portrait-placeholder{
+    width:100%; height:100%;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    background:linear-gradient(165deg, var(--sand-soft), var(--sand));
+    text-align:center; padding:2rem;
+  }
+  .portrait-placeholder svg{
+    width:50px; height:50px; stroke:var(--sage); fill:none;
+    stroke-width:1.2; margin-bottom:1rem;
+  }
+  .portrait-placeholder p{
+    font-weight:700; font-size:.74rem; letter-spacing:.2em; text-transform:uppercase;
+    color:var(--sage-deep); margin:0;
+  }
+  .portrait-placeholder small{
+    display:block; margin-top:.5rem; font-size:.76rem; color:var(--text-soft);
+  }
+
+  /* ============================================================
+     10. SERVICES — cards, 3 / 2 / 1 grid, no prices
+     ============================================================ */
+  .svc-card{
+    background:#fff; border-radius:var(--radius-lg); overflow:hidden; height:100%;
+    border:1px solid rgba(234,223,207,.8);
+    box-shadow:var(--shadow-sm);
+    transition:transform .45s ease, box-shadow .45s ease;
+  }
+  .svc-card:hover{ transform:translateY(-7px); box-shadow:var(--shadow-md); }
+  .svc-media{ overflow:hidden; aspect-ratio:4/3; }
+  .svc-media img{
+    width:100%; height:100%; object-fit:cover;
+    transition:transform .8s cubic-bezier(.16,1,.3,1);
+  }
+  .svc-card:hover .svc-media img{ transform:scale(1.07); }
+  .svc-body{ padding:1.5rem 1.5rem 1.6rem; }
+  .svc-body h3{ font-size:1.3rem; margin-bottom:.45rem; }
+  .svc-body p{ font-size:.92rem; color:var(--text-soft); line-height:1.75; margin-bottom:1rem; }
+  .svc-note{
+    font-size:.78rem; font-weight:700; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--text-soft);
+  }
+
+  /* ============================================================
+     11. GALLERY — 3 columns (2 on mobile) + lightbox
+     ============================================================ */
+  .gallery-grid{
+    display:grid; grid-template-columns:repeat(2, 1fr); gap:.8rem;
+  }
+  @media (min-width:768px){ .gallery-grid{ grid-template-columns:repeat(3, 1fr); gap:1rem; } }
+  .gallery-grid figure{
+    margin:0; overflow:hidden; border-radius:var(--radius-md);
+    cursor:zoom-in; background:var(--sand); position:relative;
+  }
+  .gallery-grid img{
+    width:100%; height:100%; aspect-ratio:1/1; object-fit:cover; display:block;
+    transition:transform .8s cubic-bezier(.16,1,.3,1);
+  }
+  .gallery-grid figure:hover img{ transform:scale(1.07); }
+  /* lightbox */
+  .lightbox{
+    position:fixed; inset:0; z-index:2000; display:none;
+    align-items:center; justify-content:center;
+    background:rgba(47,47,47,.92); backdrop-filter:blur(4px);
+  }
+  .lightbox.open{ display:flex; }
+  .lightbox img{
+    max-width:min(92vw, 900px); max-height:82vh;
+    border-radius:var(--radius-md); box-shadow:0 22px 60px rgba(0,0,0,.4);
+  }
+  .lb-btn{
+    position:absolute; background:transparent; border:1px solid rgba(250,246,240,.45);
+    color:var(--cream); width:44px; height:44px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    transition:all .3s ease; font-size:1.3rem; line-height:1;
+  }
+  .lb-btn:hover{ border-color:var(--terra-soft); color:var(--terra-soft); }
+  .lb-close{ top:1.3rem; right:1.3rem; }
+  .lb-prev{ left:1.1rem; top:50%; transform:translateY(-50%); }
+  .lb-next{ right:1.1rem; top:50%; transform:translateY(-50%); }
+  .lb-caption{
+    position:absolute; bottom:1.3rem; left:50%; transform:translateX(-50%);
+    color:rgba(250,246,240,.65); font-size:.75rem; letter-spacing:.18em; text-transform:uppercase;
+  }
+
+  /* ============================================================
+     12. REVIEWS — soft sand cards, terracotta stars
+     ============================================================ */
+  .review-card{
+    background:var(--sand); border-radius:var(--radius-lg);
+    padding:2.2rem 2rem; height:100%;
+    transition:transform .4s ease, box-shadow .4s ease;
+  }
+  .review-card:hover{ transform:translateY(-5px); box-shadow:var(--shadow-md); }
+  .review-card .stars{ color:var(--terra); font-size:1rem; letter-spacing:.18em; }
+  .review-card blockquote{
+    font-family:var(--font-head); font-size:1.22rem; font-style:italic;
+    line-height:1.6; color:var(--sage-deep); margin:1rem 0 1.2rem;
+  }
+  .review-card figcaption{
+    font-size:.74rem; font-weight:700; letter-spacing:.18em;
+    text-transform:uppercase; color:var(--text-soft);
+  }
+  .rating-line{ font-size:.88rem; font-weight:700; color:var(--text-soft); letter-spacing:.06em; }
+  .rating-line b{ color:var(--sage-deep); }
+
+  /* ============================================================
+     13. STUDIO EXPERIENCE — deep sage with photo
+     ============================================================ */
+  .studio-photo{
+    width:100%; border-radius:var(--radius-lg); object-fit:cover;
+    aspect-ratio:16/11; box-shadow:0 20px 44px rgba(0,0,0,.22);
+  }
+  .bg-sage .lead-copy{ color:rgba(250,246,240,.82); }
+
+  /* ============================================================
+     14. BOOKING / CONTACT
+     ============================================================ */
+  .info-line{
+    display:flex; gap:.9rem; align-items:flex-start;
+    padding:.85rem 0; border-bottom:1px solid var(--sand);
+  }
+  .info-line svg{
+    width:19px; height:19px; stroke:var(--sage); fill:none;
+    stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round;
+    flex:0 0 auto; margin-top:.15rem;
+  }
+  .info-line a{ color:var(--sage-deep); font-weight:700; transition:color .3s ease; }
+  .info-line a:hover{ color:var(--terra); }
+  .map-frame{
+    width:100%; height:320px; border:0; border-radius:var(--radius-lg);
+    box-shadow:var(--shadow-md);
+    filter:saturate(.8) sepia(.08);   /* soften map colours to match palette */
+  }
+
+  /* ============================================================
+     15. FOOTER — deep sage, cream text
+     ============================================================ */
+  footer{ background:var(--sage-deep); color:rgba(250,246,240,.8); }
+  footer .brand{
+    display:inline-flex; align-items:center; gap:.55rem;
+    font-family:var(--font-head); font-size:1.25rem; font-weight:600; color:var(--cream);
+  }
+  footer .brand svg{
+    width:24px; height:24px; stroke:var(--sand); fill:none;
+    stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round;
+  }
+  footer a{ color:rgba(250,246,240,.8); transition:color .3s ease; }
+  footer a:hover{ color:var(--terra-soft); }
+  footer .fine{ font-size:.8rem; }
+  footer hr{ border-color:rgba(250,246,240,.15); opacity:1; }
+
+  /* ============================================================
+     16. FLOATING MOBILE WHATSAPP BUTTON (bottom right)
+     ============================================================ */
+  .fab-wa{
+    position:fixed; right:1.1rem; bottom:1.2rem; z-index:1029;
+    width:56px; height:56px; border-radius:50%;
+    background:var(--sage-deep); color:var(--cream);
+    display:none; align-items:center; justify-content:center;
+    box-shadow:0 12px 26px rgba(79,107,87,.4);
+    transition:transform .3s ease, background .3s ease;
+  }
+  .fab-wa svg{ width:26px; height:26px; stroke:currentColor; fill:none; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round; }
+  .fab-wa:hover{ background:var(--terra); transform:scale(1.06); }
+  @media (max-width:767.98px){ .fab-wa{ display:flex; } }
+
+  /* ============================================================
+     17. SCROLL FADE-UP ANIMATION
+     ============================================================ */
+  .fade-up{ opacity:0; transform:translateY(26px); transition:opacity .8s ease, transform .8s cubic-bezier(.16,1,.3,1); }
+  .fade-up.in-view{ opacity:1; transform:none; }
+  .d-1{ transition-delay:.1s; } .d-2{ transition-delay:.2s; } .d-3{ transition-delay:.3s; }
+  @media (prefers-reduced-motion:reduce){
+    .fade-up{ opacity:1; transform:none; transition:none; }
+    html{ scroll-behavior:auto; }
+  }
+  </style>
+</head>
+
+<body>
+
+<!-- ============================================================
+     SHARED WHATSAPP LINK (keep in sync if number ever changes):
+     https://wa.me/31627084180?text=Hi%20Briseida%2C%20I%27d%20like%20to%20book%20an%20appointment.
+     ============================================================ -->
+
+<!-- ============================================================
+     NAVBAR
+     ============================================================ -->
+<nav class="navbar navbar-expand-lg navbar-breeze" id="mainNav" aria-label="Main navigation">
+  <div class="container">
+    <a class="navbar-brand brand" href="#top">
+      <!-- wind-swirl logo mark -->
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M17.7 7.7a2.5 2.5 0 1 1 1.8 4.3H4"/>
+        <path d="M9.6 4.6A2 2 0 1 1 11 8H4"/>
+        <path d="M12.6 19.4A2 2 0 1 0 14 16H4"/>
+      </svg>
+      Hairstudio&nbsp;Breeze
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu"
+            aria-controls="navMenu" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="toggler-bar"></span>
+      <span class="toggler-bar"></span>
+      <span class="toggler-bar"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navMenu">
+      <ul class="navbar-nav ms-auto align-items-lg-center">
+        <li class="nav-item"><a class="nav-link" href="#briseida">Briseida</a></li>
+        <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
+        <li class="nav-item"><a class="nav-link" href="#gallery">Work</a></li>
+        <li class="nav-item"><a class="nav-link" href="#reviews">Reviews</a></li>
+        <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+        <li class="nav-item">
+          <a class="nav-book" href="https://wa.me/31627084180?text=Hi%20Briseida%2C%20I%27d%20like%20to%20book%20an%20appointment." target="_blank" rel="noopener">Book on WhatsApp</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- ============================================================
+     1 · HERO
+     ============================================================ -->
+<header class="hero" id="top">
+  <div class="hero-bg">
+    <img src="https://i.pinimg.com/1200x/9a/a4/89/9aa4890640963293fa23ea14e5cbfe95.jpg"
+         alt="Stylist cutting a client's blonde hair in a warm, naturally lit hair studio" fetchpriority="high">
+  </div>
+  <div class="container hero-content">
+    <p class="label fade-up">Hair Studio · Rotterdam</p>
+    <h1 class="h-display fade-up d-1">Hair that feels like you,<br class="d-none d-md-block"> in a studio that feels like home.</h1>
+    <p class="subtext fade-up d-2">Colour, cuts and treatments with full attention, one client at a time.</p>
+    <div class="d-flex flex-column flex-sm-row gap-3 mb-4 fade-up d-2">
+      <a href="https://wa.me/31627084180?text=Hi%20Briseida%2C%20I%27d%20like%20to%20book%20an%20appointment." target="_blank" rel="noopener" class="btn-breeze">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+        Book on WhatsApp
+      </a>
+      <a href="#services" class="btn-ghost">See Services</a>
+    </div>
+    <div class="fade-up d-3">
+      <span class="trust"><span class="stars" aria-hidden="true">★★★★★</span> 5.0 · 52 Google reviews</span>
+    </div>
+  </div>
+</header>
+
+<!-- ============================================================
+     2 · WHY BREEZE
+     ============================================================ -->
+<section class="section pb-4" aria-label="Why Hairstudio Breeze">
+  <div class="container">
+    <div class="row g-3">
+      <div class="col-12 col-md-4 fade-up">
+        <div class="why-item">
+          <div class="icon-ring">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+          </div>
+          <h3>One client at a time</h3>
+          <p>Full, unrushed attention — your appointment is reserved just for you.</p>
+        </div>
+      </div>
+      <div class="col-12 col-md-4 fade-up d-1">
+        <div class="why-item">
+          <div class="icon-ring">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/></svg>
+          </div>
+          <h3>A warm welcome</h3>
+          <p>Tea or coffee with a little cookie, always freshly made for you.</p>
+        </div>
+      </div>
+      <div class="col-12 col-md-4 fade-up d-2">
+        <div class="why-item">
+          <div class="icon-ring">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+          </div>
+          <h3>Loved for years</h3>
+          <p>Many clients have been coming back for years — that says it all.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     3 · MEET BRISEIDA
+     ============================================================ -->
+<section class="section" id="briseida">
+  <div class="container">
+    <div class="row align-items-center g-5">
+<img src="owner.webp">
+     
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-7 fade-up d-1">
+        <p class="label">Meet Briseida</p>
+        <h2 class="h-section mt-2 mb-3">Hi, I'm Briseida.</h2>
+        <hr class="sand-rule my-4" style="margin-left:0;">
+        <p class="lead-copy">
+          I'm a hairdresser with a great eye for making hair look fabulous — and I take
+          real time to understand what <em>you</em> want before we begin. Clients say
+          every visit feels like catching up with a friend.
+        </p>
+        <p class="lead-copy">
+          At Hairstudio Breeze it's just the two of us: every appointment is entirely
+          yours, with a cup of tea or coffee and a little cookie on the side. No noise,
+          no rushing — just your hair, done with care.
+        </p>
+        <a href="https://wa.me/31627084180?text=Hi%20Briseida%2C%20I%27d%20like%20to%20book%20an%20appointment." target="_blank" rel="noopener" class="btn-breeze mt-3">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+          Book with Briseida
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     4 · SERVICES
+     ============================================================ -->
+<section class="section bg-sand" id="services">
+  <div class="container">
+    <div class="text-center mb-5 fade-up">
+      <p class="label">Services</p>
+      <h2 class="h-section mt-2">What I can do for your hair</h2>
+      <hr class="sand-rule mx-auto mt-4">
+    </div>
+
+    <div class="row g-4">
+      <!-- 1 · Haircut & Blow Dry -->
+      <div class="col-lg-4 col-md-6 fade-up">
+        <article class="svc-card">
+          <div class="svc-media">
+            <img src="gallery.webp"
+                 alt="Precision haircut in progress with scissors and comb" loading="lazy">
+          </div>
+          <div class="svc-body">
+            <h3>Haircut &amp; Blow Dry</h3>
+            <p>A cut shaped to your face and lifestyle, finished with a soft, bouncy blow dry.</p>
+            <a class="link-sage" href="https://wa.me/31627084180?text=Hi%20Briseida%2C%20I%27d%20like%20to%20book%20an%20appointment." target="_blank" rel="noopener">
+              Book <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+          </div>
+        </article>
+      </div>
+
+      <!-- 2 · Colouring -->
+      <div class="col-lg-4 col-md-6 fade-up d-1">
+        <article class="svc-card">
+          <div class="svc-media">
+            <img src="gal2.webp"
+                 alt="Stylist carefully applying professional hair colour" loading="lazy">
+          </div>
+          <div class="svc-body">
+            <h3>Colouring</h3>
+            <p>Highlights, ombré and full colour — always matched to your skin tone and wishes.</p>
+            <a class="link-sage" href="https://wa.me/31627084180?text=Hi%20Briseida%2C%20I%27d%20like%20to%20book%20an%20appointment." target="_blank" rel="noopener">
+              Book <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+          </div>
+        </article>
+      </div>
+
+      <!-- 3 · Balayage -->
+      <div class="col-lg-4 col-md-6 fade-up d-2">
+        <article class="svc-card">
+          <div class="svc-media">
+            <img src="gal3.webp"
+                 alt="Hand-painted balayage being applied with foils" loading="lazy">
+          </div>
+          <div class="svc-body">
+            <h3>Balayage</h3>
+            <p>Sun-kissed, hand-painted lightness that grows out softly and naturally.</p>
+            <a class="link-sage" href="https://wa.me/31627084180?text=Hi%20Briseida%2C%20I%27d%20like%20to%20book%20an%20appointment." target="_blank" rel="noopener">
+              Book <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+          </div>
+        </article>
+      </div>
+
+      <!-- 4 · Straightening & Keratin -->
+      <div class="col-lg-4 col-md-6 fade-up">
+        <article class="svc-card">
+          <div class="svc-media">
+            <img src="gal4.jpg"
+                 alt="Long, silky straight hair with a healthy glossy finish" loading="lazy">
+          </div>
+          <div class="svc-body">
+            <h3>Straightening &amp; Keratin</h3>
+            <p>Smooth, glossy, frizz-free results — for hair that falls beautifully every day.</p>
+            <a class="link-sage" href="https://wa.me/31627084180?text=Hi%20Briseida%2C%20I%27d%20like%20to%20book%20an%20appointment." target="_blank" rel="noopener">
+              Book <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+          </div>
+        </article>
+      </div>
+
+      <!-- 5 · Curly Hair -->
+      <div class="col-lg-4 col-md-6 fade-up d-1">
+        <article class="svc-card">
+          <div class="svc-media">
+            <img src="gal5.webp"
+                 alt="Stylist's hand lifting soft, healthy blonde curls" loading="lazy">
+          </div>
+          <div class="svc-body">
+            <h3>Curly Hair</h3>
+            <p>Cuts styled for your natural texture — shape, bounce and happy curls.</p>
+            <a class="link-sage" href="https://wa.me/31627084180?text=Hi%20Briseida%2C%20I%27d%20like%20to%20book%20an%20appointment." target="_blank" rel="noopener">
+              Book <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+          </div>
+        </article>
+      </div>
+
+      <!-- 6 · Perms -->
+      <div class="col-lg-4 col-md-6 fade-up d-2">
+        <article class="svc-card">
+          <div class="svc-media">
+            <img src="https://images.pexels.com/photos/14615064/pexels-photo-14615064.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=705&w=470"
+                 alt="Hair being curled into soft waves with a round brush" loading="lazy">
+          </div>
+          <div class="svc-body">
+            <h3>Perms</h3>
+            <p>Soft, natural-looking waves and curls with movement and volume.</p>
+            <a class="link-sage" href="https://wa.me/31627084180?text=Hi%20Briseida%2C%20I%27d%20like%20to%20book%20an%20appointment." target="_blank" rel="noopener">
+              Book <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+          </div>
+        </article>
+      </div>
+
+      <!-- 7 · Children's Cuts -->
+      <div class="col-lg-4 col-md-6 fade-up">
+        <article class="svc-card">
+          <div class="svc-media">
+            <img src="https://images.pexels.com/photos/36741613/pexels-photo-36741613.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=705&w=528"
+                 alt="Smiling child enjoying a haircut at the studio" loading="lazy">
+          </div>
+          <div class="svc-body">
+            <h3>Children's Cuts</h3>
+            <p>Patient, gentle and friendly — first haircuts and regular trims, minus the fuss.</p>
+            <a class="link-sage" href="https://wa.me/31627084180?text=Hi%20Briseida%2C%20I%27d%20like%20to%20book%20an%20appointment." target="_blank" rel="noopener">
+              Book <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+          </div>
+        </article>
+      </div>
+
+      <!-- 8 · Shampoo & Conditioning -->
+      <div class="col-lg-4 col-md-6 fade-up d-1">
+        <article class="svc-card">
+          <div class="svc-media">
+            <img src="https://images.pexels.com/photos/11360227/pexels-photo-11360227.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=940"
+                 alt="Relaxing shampoo and conditioning wash at the basin" loading="lazy">
+          </div>
+          <div class="svc-body">
+            <h3>Shampoo &amp; Conditioning</h3>
+            <p>A relaxing wash with a nourishing treatment that leaves hair fresh and soft.</p>
+            <a class="link-sage" href="https://wa.me/31627084180?text=Hi%20Briseida%2C%20I%27d%20like%20to%20book%20an%20appointment." target="_blank" rel="noopener">
+              Book <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+          </div>
+        </article>
+      </div>
+
+      <!-- Soft CTA tile filling the 9th grid cell -->
+      <div class="col-lg-4 col-md-6 fade-up d-2">
+        <div class="h-100 d-flex flex-column justify-content-center align-items-center text-center p-4"
+             style="border:1.5px dashed var(--sage); border-radius:var(--radius-lg);">
+          <svg viewBox="0 0 24 24" aria-hidden="true" style="width:30px;height:30px;stroke:var(--sage);fill:none;stroke-width:1.4;margin-bottom:.8rem;">
+            <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/>
+          </svg>
+          <h3 style="font-size:1.25rem;">Not sure what you need?</h3>
+          <p class="mb-4" style="font-size:.92rem; color:var(--text-soft); line-height:1.75;">
+            Just message me — we'll figure it out together before you come in.
+          </p>
+          <a href="https://wa.me/31627084180?text=Hi%20Briseida%2C%20I%27d%20like%20to%20book%20an%20appointment." target="_blank" rel="noopener" class="btn-ghost" style="padding:.75rem 1.8rem;">
+            Ask on WhatsApp
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <p class="text-center svc-note mt-5 mb-0 fade-up">Message me for prices and availability.</p>
+  </div>
+</section>
+
+<!-- ============================================================
+     5 · GALLERY / SELECTED WORK
+     ============================================================ -->
+<section class="section" id="gallery">
+  <div class="container">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end gap-3 mb-5 fade-up">
+      <div>
+        <p class="label">Selected Work</p>
+        <h2 class="h-section mt-2 mb-0">A little of what leaves the studio</h2>
+      </div>
+      <a href="#" class="link-sage mb-1" aria-label="More work on Instagram">
+        <svg viewBox="0 0 24 24" aria-hidden="true" style="width:16px;height:16px;"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        More on Instagram
+      </a>
+    </div>
+
+    <div class="gallery-grid fade-up">
+      <figure>
+        <img src="https://images.pexels.com/photos/3356211/pexels-photo-3356211.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=700&w=700"
+             alt="Glossy red hair, sleek and freshly styled" loading="lazy">
+      </figure>
+      <figure>
+        <img src="https://images.pexels.com/photos/16961222/pexels-photo-16961222.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=700&w=700"
+             alt="Soft blonde waves with natural, undone texture" loading="lazy">
+      </figure>
+      <figure>
+        <img src="https://images.pexels.com/photos/29555682/pexels-photo-29555682.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=700&w=700"
+             alt="Balayage foils mid-way through a colour service" loading="lazy">
+      </figure>
+      <figure>
+        <img src="https://images.pexels.com/photos/18339017/pexels-photo-18339017.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=700&w=700"
+             alt="Full, healthy natural curls with beautiful shape" loading="lazy">
+      </figure>
+      <figure>
+        <img src="https://images.pexels.com/photos/7622541/pexels-photo-7622541.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=700&w=700"
+             alt="Hair being gathered into a soft, low bun" loading="lazy">
+      </figure>
+      <figure>
+        <img src="https://images.pexels.com/photos/8102088/pexels-photo-8102088.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=700&w=700"
+             alt="Tousled short crop with modern texture" loading="lazy">
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer">
+  <button class="lb-btn lb-close" id="lbClose" aria-label="Close image viewer">&times;</button>
+  <button class="lb-btn lb-prev" id="lbPrev" aria-label="Previous image">&#8249;</button>
+  <img src="" alt="" id="lbImg">
+  <button class="lb-btn lb-next" id="lbNext" aria-label="Next image">&#8250;</button>
+  <p class="lb-caption" id="lbCount">1 / 6</p>
+</div>
+
+<!-- ============================================================
+     6 · REVIEWS
+     ============================================================ -->
+<section class="section" id="reviews">
+  <div class="container">
+    <div class="text-center mb-5 fade-up">
+      <p class="label">Reviews</p>
+      <h2 class="h-section mt-2 mb-3">Sweet words from clients</h2>
+      <p class="rating-line"><b>★ 5.0</b> on Google · 52 reviews</p>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-md-4 fade-up">
+        <figure class="review-card">
+          <div class="stars" aria-label="5 out of 5 stars">★★★★★</div>
+          <blockquote>"Briseida is a kind heart with a great eye for making hair look fabulous."</blockquote>
+          <figcaption>— Google review</figcaption>
+        </figure>
+      </div>
+      <div class="col-md-4 fade-up d-1">
+        <figure class="review-card">
+          <div class="stars" aria-label="5 out of 5 stars">★★★★★</div>
+          <blockquote>"My favourite hairdresser for almost 6 years!"</blockquote>
+          <figcaption>— Google review</figcaption>
+        </figure>
+      </div>
+      <div class="col-md-4 fade-up d-2">
+        <figure class="review-card">
+          <div class="stars" aria-label="5 out of 5 stars">★★★★★</div>
+          <blockquote>"Our haircuts turned out fantastic - just what we wanted!"</blockquote>
+          <figcaption>— Google review</figcaption>
+        </figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     7 · THE STUDIO EXPERIENCE
+     ============================================================ -->
+<section class="section bg-sage on-dark">
+  <div class="container">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-6 fade-up">
+        <p class="label on-dark">The Studio</p>
+        <h2 class="h-section mt-2 mb-3">The Breeze experience</h2>
+        <hr class="sand-rule my-4" style="margin-left:0;">
+        <p class="lead-copy">
+          Step out of the city rush and into a calm, private corner of Rotterdam.
+          The studio is quiet, bright and personal — there is no waiting room full
+          of people, no noise of other clippers and driers. Just you, your hair,
+          and an hour that is entirely yours.
+        </p>
+        <p class="lead-copy mb-4">
+          Sit down, breathe out, and enjoy your tea or coffee with a little cookie
+          while we take care of the rest.
+        </p>
+        <a href="https://wa.me/31627084180?text=Hi%20Briseida%2C%20I%27d%20like%20to%20book%20an%20appointment." target="_blank" rel="noopener" class="btn-ghost light">
+          Come by soon
+        </a>
+      </div>
+      <div class="col-lg-6 fade-up d-1">
+        <img class="studio-photo"
+             src="https://images.pexels.com/photos/39433792/pexels-photo-39433792.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=800&w=1164"
+             alt="A cozy, warmly lit studio corner with plants and comfortable seating" loading="lazy">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     8 · BOOKING / CONTACT
+     ============================================================ -->
+<section class="section" id="contact">
+  <div class="container">
+    <div class="row g-5 align-items-start">
+      <div class="col-lg-6 fade-up">
+        <p class="label">Book &amp; Visit</p>
+        <h2 class="h-section mt-2 mb-3">Book your appointment</h2>
+        <hr class="sand-rule my-4" style="margin-left:0;">
+        <p class="lead-copy">
+          No booking system, no forms — just send me a quick message and we'll
+          find a moment that suits you. I usually reply the same day.
+        </p>
+
+        <div class="d-flex flex-column flex-sm-row gap-3 my-4">
+          <a href="https://wa.me/31627084180?text=Hi%20Briseida%2C%20I%27d%20like%20to%20book%20an%20appointment." target="_blank" rel="noopener" class="btn-breeze justify-content-center">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+            WhatsApp Me
+          </a>
+          <a href="tel:+31627084180" class="btn-ghost justify-content-center">
+            <svg viewBox="0 0 24 24" aria-hidden="true" style="width:18px;height:18px;"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            Call
+          </a>
+        </div>
+
+        <div class="info-line">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+          <span>
+            <a href="https://maps.google.com/?q=Blokweg+39,+3074+RH+Rotterdam" target="_blank" rel="noopener">
+              Blokweg 39, 3074 RH Rotterdam
+            </a>
+          </span>
+        </div>
+        <div class="info-line">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          <span>Opens at 9:00 am</span>
+        </div>
+        <div class="info-line">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          <a href="tel:+31627084180">+31 6 27084180</a>
+        </div>
+      </div>
+
+      <div class="col-lg-6 fade-up d-1">
+        <iframe class="map-frame"
+                src="https://www.google.com/maps?q=Blokweg+39,+3074+RH+Rotterdam,+Netherlands&output=embed"
+                loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+                title="Map of Hairstudio Breeze, Blokweg 39, Rotterdam"></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     9 · FOOTER
+     ============================================================ -->
+<footer class="py-5">
+  <div class="container">
+    <div class="row g-4 align-items-start">
+      <div class="col-lg-4">
+        <a class="navbar-brand brand" href="#top" style="text-decoration:none;">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M17.7 7.7a2.5 2.5 0 1 1 1.8 4.3H4"/>
+            <path d="M9.6 4.6A2 2 0 1 1 11 8H4"/>
+            <path d="M12.6 19.4A2 2 0 1 0 14 16H4"/>
+          </svg>
+          Hairstudio&nbsp;Breeze
+        </a>
+        <p class="fine mt-3 mb-0">Personal attention.<br>One client at a time.</p>
+      </div>
+      <div class="col-lg-4">
+        <p class="fine mb-1">
+          <a href="https://maps.google.com/?q=Blokweg+39,+3074+RH+Rotterdam" target="_blank" rel="noopener">
+            Blokweg 39, 3074 RH Rotterdam
+          </a>
+        </p>
+        <p class="fine mb-0"><a href="tel:+31627084180">+31 6 27084180</a></p>
+      </div>
+      <div class="col-lg-4 text-lg-end">
+        <a href="https://wa.me/31627084180?text=Hi%20Briseida%2C%20I%27d%20like%20to%20book%20an%20appointment." target="_blank" rel="noopener" class="link-sage" style="color:var(--terra-soft);">
+          Book on WhatsApp
+          <svg viewBox="0 0 24 24" aria-hidden="true" style="stroke:var(--terra-soft);"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      </div>
+    </div>
+    <hr class="my-4">
+    <div class="d-flex flex-column flex-md-row justify-content-between gap-2">
+      <p class="fine mb-0">© <span id="year">2025</span> Hairstudio Breeze. All rights reserved.</p>
+      <p class="fine mb-0" style="color:rgba(250,246,240,.5);">Rotterdam · The Netherlands</p>
+    </div>
+  </div>
+</footer>
+
+<!-- Floating mobile WhatsApp button (bottom right) -->
+<a href="https://wa.me/31627084180?text=Hi%20Briseida%2C%20I%27d%20like%20to%20book%20an%20appointment." target="_blank" rel="noopener"
+   class="fab-wa" aria-label="Book on WhatsApp">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+</a>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+/* ============================================================
+   HAIRSTUDIO BREEZE — interactions
+   1. Navbar: transparent → cream + shadow on scroll
+   2. Mobile menu: auto-close after choosing a link
+   3. Fade-up on scroll (IntersectionObserver)
+   4. Gallery lightbox with prev / next / keyboard
+   5. Footer year
+   ============================================================ */
+(function () {
+  "use strict";
+
+  /* 1 ── Navbar scroll state */
+  var nav = document.getElementById("mainNav");
+  function onScroll() {
+    nav.classList.toggle("scrolled", window.scrollY > 40);
+  }
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
+
+  /* 2 ── Auto-close mobile menu on link click */
+  var menu  = document.getElementById("navMenu");
+  menu.querySelectorAll("a").forEach(function (link) {
+    link.addEventListener("click", function () {
+      if (menu.classList.contains("show")) {
+        bootstrap.Collapse.getOrCreateInstance(menu).hide();
+      }
+    });
+  });
+
+  /* 3 ── Fade-up on scroll */
+  var els = document.querySelectorAll(".fade-up");
+  if ("IntersectionObserver" in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) {
+          en.target.classList.add("in-view");
+          io.unobserve(en.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: "0px 0px -40px 0px" });
+    els.forEach(function (el) { io.observe(el); });
+  } else {
+    els.forEach(function (el) { el.classList.add("in-view"); });
+  }
+
+  /* 4 ── Lightbox (click any gallery image to open) */
+  var figures = Array.prototype.slice.call(
+    document.querySelectorAll(".gallery-grid figure")
+  );
+  var lightbox = document.getElementById("lightbox");
+  var lbImg    = document.getElementById("lbImg");
+  var lbCount  = document.getElementById("lbCount");
+  var current  = 0;
+
+  function openLB(i) {
+    current = (i + figures.length) % figures.length;
+    var src = figures[current].querySelector("img");
+    lbImg.src = src.src;
+    lbImg.alt = src.alt;
+    lbCount.textContent = (current + 1) + " / " + figures.length;
+    lightbox.classList.add("open");
+    document.body.style.overflow = "hidden";
+  }
+  function closeLB() {
+    lightbox.classList.remove("open");
+    document.body.style.overflow = "";
+  }
+  figures.forEach(function (fig, i) {
+    fig.addEventListener("click", function () { openLB(i); });
+  });
+  document.getElementById("lbClose").addEventListener("click", closeLB);
+  document.getElementById("lbPrev").addEventListener("click", function (e) {
+    e.stopPropagation(); openLB(current - 1);
+  });
+  document.getElementById("lbNext").addEventListener("click", function (e) {
+    e.stopPropagation(); openLB(current + 1);
+  });
+  lightbox.addEventListener("click", function (e) {
+    if (e.target === lightbox) closeLB();
+  });
+  document.addEventListener("keydown", function (e) {
+    if (!lightbox.classList.contains("open")) return;
+    if (e.key === "Escape")     closeLB();
+    if (e.key === "ArrowLeft")  openLB(current - 1);
+    if (e.key === "ArrowRight") openLB(current + 1);
+  });
+
+  /* 5 ── Footer year */
+  document.getElementById("year").textContent = new Date().getFullYear();
+})();
+</script>
+</body>
+</html>
